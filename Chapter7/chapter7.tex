@@ -1,0 +1,18 @@
+%!TEX root = ../thesis.tex
+\chapter{Conclusion and Future works}
+
+\ifpdf
+    \graphicspath{{Chapter1/Figs/Raster/}{Chapter1/Figs/PDF/}{Chapter1/Figs/}}
+\else
+    \graphicspath{{Chapter1/Figs/Vector/}{Chapter1/Figs/}}
+\fi
+
+Fraud detection is a challenging and complex problem in many real-world applications, particularly credit card fraud detection problem. This thesis investigates on how to use Machine Learning and Data Science to address some of the issues in this problem. This chapter summarizes the main results of this thesis, discusses open issues and presents our future work.
+
+Chapter 3 is the survey on various challenges of the fraud detection problem, with each challenge we also presented some most suitable solutions. After they are analyzed, we have proposed the most simple and effective strategy to build the Fraud Detection Pipeline that could be used as the backbone of one fraud detection system. Based on our Fraud Detection Pipeline, we also suggest many ways to extend or upgrade it. With this comprehensive survey, we want to write more details and clearly to contribute to the community the most recent works in the fraud detection problem.
+
+Using our Fraud Detection Pipeline, which requires to update all models in the system every time frame (e.g daily), in chapter 4 we presented the mechanism to predict the improvement if we update a model, then with the pre-defined threshold we could decide which model need to update. The result shows that our system reduces the number of update times significantly, i.e 80\%. In future work, we want to replace the pre-defined threshold with a dynamic threshold that can make our system more stable and also not-sensitive with our parameter.
+
+In the Fraud Detection Pipeline, we have proposed to use undersampling technique and ensemble learning for the credit card fraud detection dataset, which is not only huge but also very high imbalanced. In chapter 5, we presented the study of this combination on the case of extremely imbalanced big data classification and the result shows that our approach is very effective and promising if the dataset is bigger or more imbalance. In future work, we want to investigate deeper on this new gap of two difficult problems, e.g feature selection on the extremely imbalanced big data classification.
+
+Most of the Machine Learning algorithms are applied to the fraud detection problem, but the graph-based learning has not been considered. In chapter 6, we used the graph p-Laplacian based semi-supervised learning with undersampling on this problem and the result shows that it outperforms the current state of the art graph Laplacian based semi-supervised method. Finding the relationship of the fraud network is one of the hardest tasks in the fraud detection problem and the graph-based learning attracts more attention recently. In future work, we want to apply the graph-based learning to detect the fraud networks in our data.

@@ -1,0 +1,405 @@
+\chapter{Solve fraud detection problem by using graph based learning methods}
+
+\ifpdf
+    \graphicspath{{Chapter1/Figs/Raster/}{Chapter1/Figs/PDF/}{Chapter1/Figs/}}
+\else
+    \graphicspath{{Chapter1/Figs/Vector/}{Chapter1/Figs/}}
+\fi
+
+
+The credit cards’ fraud transactions detection is the important problem in machine learning field. To detect the credit cards’ fraud transactions help reduce the significant loss of the credit cards’ holders and the banks. To detect the credit cards’ fraud transactions, data scientists normally employ the un-supervised learning techniques and supervised learning technique. In this paper, we employ the graph p-Laplacian based semi-supervised learning methods combined with the under-sampling technique such as Cluster Centroids to solve the credit cards’ fraud transactions detection problem. Experimental results show that that the graph p-Laplacian semi-supervised learning methods outperform the current state of art graph Laplacian based semi-supervised learning method ($p$ = 2). In the scope of this thesis, some necessary knowledge will not be presented and the reader may find them in \citep{tran2012application, latouche2015graphs}.
+
+
+\section{Introduction}
+
+While purchasing online, the transactions can be done by using credit cards that are issued by the bank. In this case, if the cards or cards’ details are stolen, the fraud transactions can be easily carried out. This will lead to the significant loss of the cardholder or the bank. In order to detect credit cards’ fraud transactions, data scientists employ a lot of machine learning techniques. To the best of our knowledge, there are two classes of machine learning techniques used to detect credit cards’ fraud transactions which are un-supervised learning techniques and supervised learning techniques. The un-supervised learning techniques used to detect credit cards’ fraud transactions are k-means clustering technique \citep{goldstein2016comparative}, k-nearest neighbors technique \citep{goldstein2016comparative}, Local Outlier Factor technique \citep{goldstein2016comparative}, to name a few. The supervised learning techniques used to detect credit cards’ fraud transactions are Hidden Markov Model technique \citep{singh2012survey}, neural network technique \citep{nune2015novel}, Support Vector Machine technique \citep{csahin2011detecting}, to name a few.
+
+To the best of our knowledge, the graph based semi-supervised learning techniques \citep{shin2007graph} have not been applied to the credit cards’ fraud transactions detection problem. In this paper, we will apply the un-normalized graph p-Laplacian based semi-supervised learning technique \citep{tran2015normalized, tran2017normalized} combined with the under-sampling technique to the credit cards’ fraud transactions detection problem.
+
+We will organize the paper as follows: Section 2 will introduce the preliminary notations and definitions used in this paper. Section 3 will introduce the definitions of the gradient and divergence operators of graphs. Section 4 will introduce the definition of Laplace operator of graphs and its properties. Section 5 will introduce the definition of the curvature operator of graphs and its properties. Section 6 will introduce the definition of the p-Laplace operator of graphs and its properties. Section 7 will show how to derive the algorithm of the un-normalized graph p-Laplacian based semi-supervised learning method from regularization framework. In section 8, we will compare the accuracy performance measures of the un-normalized graph Laplacian based semi-supervised learning algorithm (i.e. the current state of art graph based semi-supervised learning method) combined with the under-sampling technique such as Cluster Centroids technique \citep{yen2009cluster} and the un-normalized graph p-Laplacian based semi-supervised learning algorithms combined with Cluster Centroids technique \citep{yen2009cluster}. Section 9 will conclude this paper and the future direction of researches.
+
+
+\section{Preliminary notations and definitions}
+
+Given a graph  $G = (V, E, W)$  where  $V$  is a set of vertices with  $\vert V \vert = n$, $E \subseteq V \ast V$ is a set of edges and  $W$ is a  $n\ast n$  similarity matrix with elements  $w_{ij} \geq 0  \left( 1 \leq i,j \leq n \right)  $.
+
+Also, please note that  $ w_{ij}=w_{ji} $ .
+
+The degree function  \( d:V \rightarrow R^{+} \)  is 
+
+
+\begin{equation}
+d_{i}= \sum _{j \sim i}^{}w_{ij}
+\end{equation}
+
+
+where  \( j \sim i \)  is the set of vertices adjacent with \textit{i}.
+
+Define  \( D=diag \left( d_{1},d_{2}, \ldots ,d_{n} \right)  \) .
+
+The inner product on the function space  \( R^{V} \)  is
+
+
+\begin{equation}
+<f,g>_{V}= \sum _{i \in V}^{}f_{i}g_{i}
+\end{equation}
+
+
+Also, define an inner product on the space of functions  \( R^{E} \)  on the edges
+
+
+\begin{equation}
+<F,G>_{E} = \sum _{ \left( i,j \right)  \in E}^{}F_{ij}G_{ij}
+\end{equation}
+
+
+Here let  \( H \left( V \right) = \left( R^{V},<.,.>_{V} \right)  \)  and  \( H \left( E \right) = \left( R^{E},<.,.>_{E} \right)  \)  be the Hilbert space real-valued functions defined on the vertices of the graph \textit{G} and the Hilbert space of real-valued functions defined in the edges of \textit{G} respectively.
+
+
+\section{Gradient and Divergence Operators}
+
+We define the gradient operator  \( d:H \left( V \right)  \rightarrow H \left( E \right)  \)  to be\par
+
+
+\begin{equation}
+\left( df \right) _{ij}=\sqrt[]{w_{ij}} \left( f_{j}-f_{i} \right)
+\end{equation}
+
+
+where  \( f:V \rightarrow R \)  be a function of  \( H \left( V \right)  \) .
+
+We define the divergence operator  \( div:H \left( E \right)  \rightarrow H \left( V \right)  \)  to be
+
+
+\begin{equation}
+<df,F>_{H \left( E \right) }=<f,-divF>_{H \left( V \right) },
+\end{equation}
+
+
+where  \( f \in H \left( V \right) ,F \in H \left( E \right)  \) .
+
+Thus, we have 
+
+
+\begin{equation}
+\left( divF \right) _{j}= \sum _{i \sim j}^{}\sqrt[]{w_{ij}} \left( F_{ji}-F_{ij} \right)
+\end{equation}
+
+
+
+\section{Laplace operator}
+
+We define the Laplace operator  \(  \Delta :H \left( V \right)  \rightarrow H \left( V \right)  \)  to be
+
+
+\begin{equation}
+\Delta f=-\frac{1}{2}div \left( df \right)
+\end{equation}
+
+
+Thus, we have 
+
+
+\begin{equation}
+\left(  \Delta f \right) _{j}=d_{j}f_{j}- \sum _{i \sim j}^{}w_{ij}f_{i}
+\end{equation}
+
+
+The graph Laplacian is a linear operator. Furthermore, the graph Laplacian is self-adjoint and positive semi-definite. 
+
+Let  \( S_{2} \left( f \right) =< \Delta f,f> \) , we have the following \textbf{theorem 1}
+
+
+\begin{equation}
+D_{f}S_{2}=2 \Delta f
+\end{equation}
+
+
+The proof of the above theorem can be found from \citep{tran2015normalized, tran2017normalized}.
+
+
+\section{Curvature operator}
+
+We define the curvature operator  \(  \kappa :H \left( V \right)  \rightarrow H \left( V \right)  \)  to be
+
+
+\begin{equation}
+\kappa f=-\frac{1}{2}div \left( \frac{df}{ \vert  \vert df \vert  \vert } \right)
+\end{equation}
+
+
+Thus, we have
+
+
+\begin{equation}
+\label{eq:kf_j}
+\left(  \kappa f \right) _{j}=\frac{1}{2} \sum _{i \sim j}^{}w_{ij} \left( \frac{1}{ \Vert d_{i}f \Vert }+\frac{1}{ \Vert d_{j}f \Vert } \right)  \left( f_{j}-f_{i} \right)
+\end{equation}
+
+
+From the above formula, we have
+
+
+\begin{equation}
+d_{i}f= \left(  \left( df \right) _{ij}:j \sim i \right) ^{T}
+\end{equation}
+
+
+The local variation of \textit{f} at \textit{i} is defined to be 
+
+
+\begin{equation}
+\Vert d_{i}f \Vert =\sqrt[]{ \sum _{j \sim i}^{} \left( df \right) _{ij}^{2}}=\sqrt[]{ \sum _{j \sim i}^{}w_{ij} \left( f_{j}-f_{i} \right) ^{2}}
+\end{equation}
+
+
+To avoid the zero denominators in \ref{eq:kf_j}, the local variation of \textit{f} at \textit{i} is defined to be
+
+
+\begin{equation}
+\Vert d_{i}f \Vert =\sqrt[]{ \sum _{j \sim i}^{} \left( df \right) _{ij}^{2}+ \epsilon }
+\end{equation}
+
+
+where  \(  \epsilon =10^{-10} \) .
+
+The graph curvature is a non-linear operator.    
+
+Let  \( S_{1} \left( f \right) = \sum _{i}^{} \Vert d_{i}f \Vert  \) , we have the following \textbf{theorem 2}
+
+
+\begin{equation}
+D_{f}S_{1}= \kappa f
+\end{equation}
+
+
+The proof of the above theorem can be found from \citep{tran2015normalized, tran2017normalized}.
+
+
+\section{p-Laplace operator}
+
+We define the p-Laplace operator  \(  \Delta _{p}:H \left( V \right)  \rightarrow H \left( V \right)  \)  to be 
+
+
+\begin{equation}
+\Delta _{p}f=-\frac{1}{2}div \left(  \Vert df \Vert ^{p-2}df \right)
+\end{equation}
+
+
+Thus, we have
+
+
+\begin{equation}
+\left(  \Delta _{p}f \right) _{j}=\frac{1}{2} \sum _{i \sim j}^{}w_{ij} \left(  \Vert d_{i}f \Vert ^{p-2}+ \Vert d_{j}f \Vert ^{p-2} \right)  \left( f_{j}-f_{i} \right)
+\end{equation}
+
+Let  \( S_{p} \left( f \right) =\frac{1}{p} \sum _{i}^{} \Vert d_{i}f \Vert ^{p} \) , we have the following \textbf{theorem 3}\ \ \ \  \par
+
+
+\begin{equation}
+D_{f}S_{p}=p \Delta _{p}f
+\end{equation}
+
+
+\section{Discrete regularization on graphs and credit cards’ fraud transactions detection problems}
+
+Given a transaction network \textit{G=(V,E)}. \textit{V} is the set of all transactions in the network and \textit{E} is the set of all possible interactions between these transactions. Let \textit{y} denote the initial function in \textit{H(V)}.  \( y_{i} \) \textit{ }can be defined as follows
+
+$$
+y_{i} = \begin{cases}
+
+ & 1 \text{ if transaction } i \text{ is the fraud transaction} \\ 
+ & -1 \text{ if transaction } i \text{ is the normal transaction} \\
+ & 0 \text{ otherwise} \\
+
+\end{cases}
+$$
+
+Our goal is to look for an estimated function \textit{f} in \textit{H(V)} such that \textit{f} is not only smooth on \textit{G} but also close enough to an initial function \textit{y}. Then each transaction \textit{i} is classified as  \( sign \left( f_{i} \right)  \) . This concept can be formulated as the following optimization problem
+
+
+\begin{equation}
+\label{eq:opt}
+argmin_{f \in H \left( V \right) } \{ S_{p} \left( f \right) +\frac{ \mu }{2} \Vert f-y \Vert ^{2} \} 
+\end{equation}
+
+
+The first term in \ref{eq:opt} is the smoothness term. The second term is the fitting term. A positive parameter  \(  \mu  \)  captures the trade-off between these two competing terms.
+
+
+\subsection{p-smoothness}
+
+For any number \textit{p}, the optimization problem \ref{eq:opt} is 
+
+
+\begin{equation}
+\label{eq:p_smoothness}
+argmin_{f \in H \left( V \right) } \{ \frac{1}{p} \sum _{i}^{} \Vert d_{i}f \Vert ^{p}+\frac{ \mu }{2} \Vert f-y \Vert ^{2} \}
+\end{equation}
+
+
+By theorem 3, we have
+
+\textbf{Theorem 4:} The solution of \ref{eq:p_smoothness} satisfies
+
+
+\begin{equation}
+\label{eq:opt_satisfies}
+\Delta _{p}f+ \mu  \left( f-y \right) = 0
+\end{equation}
+
+
+The \textit{p-Laplace} operator is a non-linear operator; hence we do not have the closed form solution of equation \ref{eq:opt_satisfies}. Thus, we have to construct iterative algorithm to obtain the solution. From \ref{eq:opt_satisfies}, we have
+
+
+\begin{equation}
+\label{eq:opt_ext}
+\frac{1}{2} \sum _{i \sim j}^{}w_{ij} \left(  \Vert d_{i}f \Vert ^{p-2}+ \Vert d_{j}f \Vert ^{p-2} \right)  \left( f_{j}-f_{i} \right) + \mu  \left( f_{j}-y_{j} \right) = 0
+\end{equation}
+
+
+Define the function  \( m:E \rightarrow R \) by 
+
+
+\begin{equation}
+m_{ij}=\frac{1}{2}w_{ij} \left(  \Vert d_{i}f \Vert ^{p-2}+ \Vert d_{j}f \Vert ^{p-2} \right)
+\end{equation}
+
+
+Then equation \ref{eq:opt_ext} which is 
+
+$$\sum _{i \sim j}^{}m_{ij} \left( f_{j}-f_{i} \right) + \mu  \left( f_{j}-y_{j} \right) =0 $$
+
+can be transformed into
+
+
+\begin{equation}
+\left(  \sum _{i \sim j}^{}m_{ij}+ \mu  \right) f_{j}= \sum _{i \sim j}^{}m_{ij}f_{i}+ \mu y_{j}
+\end{equation}
+
+
+Define the function  \( p:E \rightarrow R \)  by 
+
+
+\begin{equation}
+p_{ij} = \begin{cases}
+  \frac{m_{ij}}{ \sum _{i \sim j}m_{ij}+ \mu } \text{ if } i \neq j \\
+  \frac{ \mu }{ \sum _{i \sim j}m_{ij}+ \mu } \text{ if } i=j \\
+\end{cases}
+\end{equation}
+
+
+Then 
+
+
+\begin{equation}
+f_{j}= \sum _{i \sim j}^{}p_{ij}f_{i}+p_{jj}y_{j}
+\end{equation}
+
+
+Thus we can consider the iteration 
+
+$$f_{j}^{ \left( t+1 \right) }= \sum _{i \sim j}^{}p_{ij}^{ \left( t \right) }f_{i}^{ \left( t \right) }+p_{jj}^{ \left( t \right) }y_{j} \text{ for all } j \in V $$
+
+to obtain the solution of \ref{eq:p_smoothness}.
+
+
+\section{Experiments and results}
+
+\textbf{Datasets}
+
+In this paper, we use the transaction dataset available from \citep{dal2015calibrating}. This dataset contains 284,807 transactions. Each transaction has 30 features. In the other words, we are given transaction data matrix ( \( R^{284807\ast30} \) ) and the annotation (i.e. the label) matrix ( \( R^{284807\ast1} \) ). The ratio between the number of fraud transactions and the number of normal transactions is 0.00173. Hence we easily recognize that this is the imbalanced classification problem. In order to solve this imbalanced classification problem, we initially apply the under-sampling technique which is the Cluster Centroid technique \citep{yen2009cluster} to this imbalanced dataset. Then we have that the ratio between the number of fraud transactions and the number of normal transactions is 0.4. In the other words, we are given the \textbf{new transaction data} matrix ( \( R^{1722\ast30} \) ) and the annotation (i.e. the label) matrix ( \( R^{1722\ast1} \) ).\par
+
+Then we construct the similarity graph from the transaction data. The similarity graph used in this paper is the k-nearest neighbor graph: Transaction \textit{i} is connected with transaction \textit{j} if transaction \textit{i} is among the k-nearest neighbor of transaction \textit{j} or transaction \textit{j} is among the k-nearest neighbor of transaction \textit{i}.\  \textit{ } \par
+
+In this paper, the similarity function is the Gaussian similarity function
+
+$$
+s \big( T(i,:), T(j,:) \big) = exp \bigg( - \frac{ d \big(T(i,:), T(j,:) \big) }{t} \bigg)
+$$
+
+In this paper, $t$ is set to 0.1 and the 5-nearest neighbor graph is used to construct the similarity graph from the \textbf{new transaction data}.\ \ \ \ \  \par
+
+\textbf{Experimental Results}
+
+
+In this section, we experiment with the above proposed un-normalized graph p-Laplacian methods with \textit{p=1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9} and the current state of the art method (i.e. the un-normalized graph Laplacian based semi-supervised learning method \textit{p=2}) in terms of classification accuracy performance measure. The accuracy performance measure Q is given as follows
+
+$$Q=\frac{True Positive+True Negative}{True Positive+True Negative+False Positive+False Negative}$$
+
+The \textbf{new transaction data} is divided into two subsets: the training set and the testing set. The training set contains 1,208 transactions. The testing set contains 514 transactions. The parameter  \(  \mu  \)  is set to 1.
+
+The accuracy performance measures of the above proposed methods and the current state of the art method is given in the following table 1
+
+
+%%%%%%%%%%%%%%%%%%%% Table No: 1 starts here %%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[]
+\centering
+\caption{The comparison of accuracies of proposed methods with different p-values}
+\label{tbl:accuracy_performance_measures}
+\begin{tabular}{|c|c|}
+
+\hline
+%row no:1
+\multicolumn{2}{|c|}{Accuracy Performance Measures ($\%$ )} \\
+\hline
+%row no:2
+\multicolumn{1}{|c}{p=1} & 
+\multicolumn{1}{|c|}{88.52} \\
+\hline
+%row no:3
+\multicolumn{1}{|c}{p=1.1} & 
+\multicolumn{1}{|c|}{88.52} \\
+\hline
+%row no:4
+\multicolumn{1}{|c}{p=1.2} & 
+\multicolumn{1}{|c|}{88.52} \\
+\hline
+%row no:5
+\multicolumn{1}{|c}{p=1.3} & 
+\multicolumn{1}{|c|}{88.52} \\
+\hline
+%row no:6
+\multicolumn{1}{|c}{p=1.4} & 
+\multicolumn{1}{|c|}{88.52} \\
+\hline
+%row no:7
+\multicolumn{1}{|c}{p=1.5} & 
+\multicolumn{1}{|c|}{88.52} \\
+\hline
+%row no:8
+\multicolumn{1}{|c}{p=1.6} & 
+\multicolumn{1}{|c|}{88.52} \\
+\hline
+%row no:9
+\multicolumn{1}{|c}{p=1.7} & 
+\multicolumn{1}{|c|}{88.52} \\
+\hline
+%row no:10
+\multicolumn{1}{|c}{p=1.8} & 
+\multicolumn{1}{|c|}{88.52} \\
+\hline
+%row no:11
+\multicolumn{1}{|c}{p=1.9} & 
+\multicolumn{1}{|c|}{88.52} \\
+\hline
+%row no:12
+\multicolumn{1}{|c}{p=2} & 
+\multicolumn{1}{|c|}{88.33} \\
+\hline
+
+\end{tabular}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%% Table No: 1 ends here %%%%%%%%%%%%%%%%%%%%
+
+
+From the above table, we easily recognized that the un-normalized graph p-Laplacian semi-supervised learning methods outperform the current state of art method. The results from the above table show that the un-normalized graph p-Laplacian semi-supervised learning methods are at least as good as the current state of the art method (\textit{p=2}) but often lead to better classification accuracy performance measures.
+
+
+\section{Conclusions}
+
+We have developed the detailed regularization frameworks for the un-normalized graph p-Laplacian semi-supervised learning methods applying to the credit cards’ fraud transactions detection problem. Experiments show that the un-normalized graph p-Laplacian semi-supervised learning methods are at least as good as the current state of the art method (i.e. \textit{p=2}) but often lead to significant better classification accuracy performance measures. 
+
+In the future, we will develop the detailed regularization frameworks for the un-normalized hypergraph p-Laplacian semi-supervised learning methods and will apply these methods to this credit cards’ fraud transactions detection problem.

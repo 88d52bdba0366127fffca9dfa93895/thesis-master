@@ -1,0 +1,23 @@
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Cost of Fraud as a \% of Revenues Keeps Going Up \citep {lexisnexis2016}\relax }}{2}{figure.caption.7}
+\contentsline {figure}{\numberline {1.2}{\ignorespaces Total Costs per Dollar of Fraud Losses \citep {lexisnexis2016}\relax }}{3}{figure.caption.8}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces A tree showing survival of passengers on the Titanic\relax }}{12}{figure.caption.17}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Bagging ensemble.\relax }}{15}{figure.caption.25}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Boosting ensemble.\relax }}{16}{figure.caption.27}
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Stacking ensemble.\relax }}{17}{figure.caption.29}
+\contentsline {figure}{\numberline {2.5}{\ignorespaces Precision and recall\relax }}{18}{figure.caption.32}
+\contentsline {figure}{\numberline {2.6}{\ignorespaces ROC curve of three predictors of peptide cleaving in the proteasome\relax }}{20}{figure.caption.34}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Three common sampling methods\relax }}{24}{figure.caption.43}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Building single model by combining multiple Random Forest classifiers (RF)\relax }}{40}{figure.caption.61}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Recommended Fraud Detection Pipeline\relax }}{42}{figure.caption.67}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Accuracy of our Fraud Detection Pipeline\relax }}{45}{figure.caption.68}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Illustration of four types in Concept Drift\relax }}{49}{figure.caption.70}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Result of concept drift detection\relax }}{54}{figure.caption.71}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
